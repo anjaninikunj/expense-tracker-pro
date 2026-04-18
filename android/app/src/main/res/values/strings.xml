@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ExpensePro</string>
+    <string name="title_activity_main">ExpensePro</string>
+    <string name="package_name">com.nikunj.expensepro</string>
+    <string name="custom_url_scheme">com.nikunj.expensepro</string>
+</resources>

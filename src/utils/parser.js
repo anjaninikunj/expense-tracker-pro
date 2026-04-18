@@ -39,29 +39,27 @@ export const parseVoiceCommand = (text) => {
              normalized.includes('tution') || normalized.includes('school') || normalized.includes('દીકરો') || normalized.includes('પ્રિયાંશ')) {
     result.category = 'Son';
     if (normalized.includes('tution') || normalized.includes('school')) result.subCategory = 'Education';
-  } else if (normalized.includes('father') || normalized.includes('crops') || normalized.includes('harvesting') || 
+  } else if (normalized.includes('father') || normalized.includes('papa') || normalized.includes('medicine') ||
+             normalized.includes('crops') || normalized.includes('harvesting') || 
              normalized.includes('labour') || normalized.includes('પિતા') || normalized.includes('ખેતી')) {
     result.category = 'Father';
     if (normalized.includes('labour')) result.subCategory = 'Labour';
     if (normalized.includes('crops')) result.subCategory = 'Farm Activity';
-  } else if (normalized.includes('farm') || normalized.includes('ખેતર')) {
-    result.category = 'Farm';
-  } else if (normalized.includes('home') || normalized.includes('rent')) {
-    result.category = 'Home';
-    if (normalized.includes('rent')) result.subCategory = 'Rent';
-  } else if (normalized.includes('investment') || normalized.includes('asset') || normalized.includes('fund') || 
-             normalized.includes('ઇન્વેસ્ટ') || normalized.includes('રોકાણ') || normalized.includes('ફંડ') || 
-             normalized.includes('કોટક') || normalized.includes('ગોલ્ડ') || normalized.includes('સિલ્વર')) {
-    result.category = 'Investment';
-    result.type = 'expense'; // Investments are usually outflows
-    if (normalized.includes('asset') || normalized.includes('fund') || normalized.includes('ફંડ')) {
-      result.subCategory = 'Mutual Fund';
-    } else if (normalized.includes('gold') || normalized.includes('silver') || normalized.includes('ગોલ્ડ') || normalized.includes('સિલ્વર')) {
-      result.subCategory = 'Commodities';
-    }
-  } else if (normalized.includes('mom') || normalized.includes('mother') || normalized.includes('physiotherapy')) {
+    if (normalized.includes('medicine')) result.subCategory = 'Health/Medical';
+  } else if (normalized.includes('mother') || normalized.includes('mom') || normalized.includes('મમ્મી') || 
+             normalized.includes('માતા') || normalized.includes('physiotherapy')) {
     result.category = 'Mom';
     if (normalized.includes('physiotherapy')) result.subCategory = 'Medical';
+    if (normalized.includes('mobile') || normalized.includes('recharge') || normalized.includes('મોબાઇલ') || normalized.includes('રિચાર્જ')) {
+      result.subCategory = 'Mobile Recharge';
+    }
+  } else if (normalized.includes('rent') || normalized.includes('ભાડુ') || normalized.includes('ભાડુતીએ')) {
+    result.category = 'Rent';
+    result.subCategory = 'Monthly Rent';
+  } else if (normalized.includes('farm') || normalized.includes('khere') || normalized.includes('ખેતર')) {
+    result.category = 'Farm';
+  } else if (normalized.includes('home') || normalized.includes('ઘર')) {
+    result.category = 'Home';
   }
 
   // 4. Detect "Not Debit" flag
@@ -81,13 +79,18 @@ export const parseVoiceCommand = (text) => {
     }
   } else if (normalized.includes('cr') || normalized.includes('income') || normalized.includes('deposit') || 
       normalized.includes('received') || normalized.includes('got') || 
-      normalized.includes('મળી') || normalized.includes('મળ્યા') || normalized.includes('જમા') || normalized.includes('આવ્યા')) {
+      normalized.includes('મળી') || normalized.includes('મળ્યા') || normalized.includes('જમા') || 
+      normalized.includes('આવ્યા') || normalized.includes('આપ્યા') || normalized.includes('આપ્યો') || 
+      normalized.includes('મને')) {
     result.type = 'income';
   } else if (normalized.includes('dr') || normalized.includes('debit') || normalized.includes('gone') || 
-             normalized.includes('installment') || normalized.includes('spent') || normalized.includes('gave') || normalized.includes('given')) {
+             normalized.includes('installment') || normalized.includes('spent') || 
+             normalized.includes('gave') || normalized.includes('given') || 
+             normalized.includes('ચૂકવ્યા') || normalized.includes('ખર્ચ')) {
     result.type = 'expense';
     if (normalized.includes('icici')) result.source = 'ICICI Bank';
   }
 
+  console.log("Parsed Voice Command:", { text, normalized, result });
   return result;
 };

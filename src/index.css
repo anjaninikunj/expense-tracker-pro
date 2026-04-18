@@ -264,3 +264,80 @@ button {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+.mpin-toggle {
+  position: absolute;
+  right: 1rem;
+  background: transparent;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  border: none;
+  cursor: pointer;
+}
+
+.mpin-toggle:hover {
+  opacity: 1;
+}
+
+.auth-error-container {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.auth-error {
+  color: var(--error-color);
+  font-size: 0.8125rem;
+  margin: 0 !important;
+  text-align: center;
+}
+
+.auth-footer-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.switch-btn {
+  background: transparent;
+  color: var(--accent-color);
+  font-weight: 600;
+  font-size: 0.875rem;
+  border: none;
+  cursor: pointer;
+}
+
+.switch-btn:hover {
+  text-decoration: underline;
+}
+
+.forgot-btn {
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.8125rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: none;
+  cursor: pointer;
+}
+
+.forgot-btn:hover {
+  color: var(--text-primary);
+}
+
+.auth-metadata {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--card-border);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  opacity: 0.5;
+}

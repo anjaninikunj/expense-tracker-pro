@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Users, Tractor, Heart, Briefcase, Settings, LayoutDashboard, Database } from 'lucide-react';
+import { Home, Users, Tractor, Heart, Briefcase, LayoutDashboard, Database, Key } from 'lucide-react';
 
 const Sidebar = ({ activeCategory, setActiveCategory }) => {
   const categories = [
@@ -9,6 +9,7 @@ const Sidebar = ({ activeCategory, setActiveCategory }) => {
     { id: 'Father', name: 'Father', icon: <Database size={20} /> },
     { id: 'Mom', name: 'Mom', icon: <Heart size={20} /> },
     { id: 'Farm', name: 'Farm', icon: <Tractor size={20} /> },
+    { id: 'Rent', name: 'Rent', icon: <Key size={20} /> },
     { id: 'Investment', name: 'Investment', icon: <Briefcase size={20} /> },
     { id: 'Home', name: 'Home', icon: <Home size={20} /> },
   ];
