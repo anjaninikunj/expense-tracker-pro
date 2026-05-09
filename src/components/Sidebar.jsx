@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, LayoutDashboard, History, Mic, PlusSquare, User, LogOut, Briefcase, Heart, Users, Database, Tractor, Key, X } from 'lucide-react';
+import { Home, LayoutDashboard, History, Mic, PlusSquare, User, LogOut, Briefcase, Heart, Users, Database, Tractor, Key, X, Shield } from 'lucide-react';
 
 const Sidebar = ({ activeCategory, setActiveCategory, activeTab, setActiveTab, isOpen, setIsOpen }) => {
   const menuItems = [
@@ -100,6 +100,19 @@ const Sidebar = ({ activeCategory, setActiveCategory, activeTab, setActiveTab, i
           >
             <span style={{ opacity: activeTab === 'transactions' ? 1 : 0.7 }}><History size={20} /></span>
             <span style={{ fontSize: '0.95rem' }}>Full History</span>
+          </button>
+
+          <button
+            onClick={() => { setActiveTab('vault'); setIsOpen(false); }}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '1rem', padding: '0.85rem 1rem', borderRadius: '1rem',
+              background: activeTab === 'vault' ? 'rgba(14, 165, 233, 0.1)' : 'transparent',
+              color: activeTab === 'vault' ? '#0ea5e9' : 'var(--text-secondary)',
+              fontWeight: activeTab === 'vault' ? '700' : '500', transition: '0.3s', textAlign: 'left'
+            }}
+          >
+            <span style={{ opacity: activeTab === 'vault' ? 1 : 0.7 }}><Shield size={20} /></span>
+            <span style={{ fontSize: '0.95rem' }}>The Vault</span>
           </button>
 
           <div style={{ padding: '0.5rem 1rem', fontSize: '0.7rem', fontWeight: '800', color: 'var(--text-secondary)', letterSpacing: '0.05em', marginTop: '1rem' }}>CATEGORIES</div>

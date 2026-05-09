@@ -3,7 +3,7 @@ import { Lock, User, ArrowRight, UserPlus, HelpCircle, Eye, EyeOff, Sparkles } f
 
 const Auth = ({ onLogin, onRegister, users }) => {
   const [isLogin, setIsLogin] = useState(true);
-  const [username, setUsername] = useState('');
+  const [username, setUsername] = useState(() => localStorage.getItem('expenses_pro_last_user') || '');
   const [mpin, setMpin] = useState('');
   const [showMpin, setShowMpin] = useState(false);
   const [error, setError] = useState('');

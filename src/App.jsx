@@ -3,6 +3,7 @@ import Sidebar from './components/Sidebar';
 import VoiceRecorder from './components/VoiceRecorder';
 import Dashboard from './components/Dashboard';
 import TransactionList from './components/TransactionList';
+import VaultDashboard from './components/VaultDashboard';
 import Auth from './components/Auth';
 import { db } from './firebase';
 import { 
@@ -100,7 +101,12 @@ function App() {
     }
   };
 
-  const handleLogout = () => setCurrentUser(null);
+  const handleLogout = () => {
+    if (currentUser) {
+      localStorage.setItem('expenses_pro_last_user', currentUser.username);
+    }
+    setCurrentUser(null);
+  };
 
   const handleNewTransaction = async (data) => {
     try {
@@ -262,6 +268,10 @@ function App() {
               setActiveTab('dashboard');
             }} 
           />
+        )}
+
+        {activeTab === 'vault' && (
+          <VaultDashboard currentUser={currentUser} />
         )}
 
         {/* Edit Modal Wrapper */}
