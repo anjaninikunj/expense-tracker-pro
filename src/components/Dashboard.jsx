@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingUp, TrendingDown, Wallet, PieChart as PieIcon } from 'lucide-react';
+import { TrendingUp, TrendingDown, Wallet, PieChart as PieIcon, Landmark, Banknote } from 'lucide-react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
 
@@ -11,16 +11,15 @@ const Dashboard = ({ transactions }) => {
     .reduce((sum, t) => sum + t.amount, 0);
   
   const totalDr = transactions
-    .filter(t => (t.type === 'expense' || t.type === 'withdrawal') && !t.excludeFromBalance)
+    .filter(t => (t.type === 'expense') && !t.excludeFromBalance)
     .reduce((sum, t) => sum + t.amount, 0);
 
   const totalExpenseDisplay = transactions
-    .filter(t => t.type === 'expense' || t.type === 'withdrawal')
+    .filter(t => t.type === 'expense')
     .reduce((sum, t) => sum + t.amount, 0);
 
   const balance = totalCr - totalDr;
 
-  // Calculate individual source balances
   const getSourceBalance = (sourceName) => {
     const cr = transactions.filter(t => t.type === 'income' && t.source === sourceName).reduce((sum, t) => sum + t.amount, 0);
     const dr = transactions.filter(t => (t.type === 'expense' || t.type === 'withdrawal') && t.source === sourceName).reduce((sum, t) => sum + t.amount, 0);
@@ -51,78 +50,55 @@ const Dashboard = ({ transactions }) => {
     plugins: {
       legend: { display: false },
       tooltip: {
-        backgroundColor: '#1e293b',
+        backgroundColor: '#12151c',
         titleColor: '#fff',
-        bodyColor: '#cbd5e1',
+        bodyColor: '#94a3b8',
         padding: 12,
-        cornerRadius: 8,
+        cornerRadius: 12,
+        displayColors: false
       }
     },
     maintainAspectRatio: false,
+    cutout: '75%'
   };
 
   return (
     <div>
-      <div className="dashboard-grid">
-        <StatCard 
-          title="Total Credit" 
-          value={`₹${totalCr.toLocaleString()}`} 
-          icon={<TrendingUp color="#10b981" />} 
-          color="#10b981"
-        />
-        <StatCard 
-          title="Total Expense" 
-          value={`₹${totalExpenseDisplay.toLocaleString()}`} 
-          icon={<TrendingDown color="#ef4444" />} 
-          color="#ef4444"
-        />
-        <StatCard 
-          title="Net Wealth" 
-          value={`₹${balance.toLocaleString()}`} 
-          icon={<Wallet color="#7c3aed" />} 
-          color="#b8a614"
-        />
-      </div>
-
-      {/* NEW: Bank & Cash Breakdown */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
-        <div className="glass-card" style={{ padding: '1rem', borderTop: '2px solid #3b82f6' }}>
-          <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 'bold' }}>BOB BANK</p>
-          <h3 style={{ fontSize: '1.25rem' }}>₹{bobBalance.toLocaleString()}</h3>
-        </div>
-        <div className="glass-card" style={{ padding: '1rem', borderTop: '2px solid #ec4899' }}>
-          <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 'bold' }}>ICICI BANK</p>
-          <h3 style={{ fontSize: '1.25rem' }}>₹{iciciBalance.toLocaleString()}</h3>
-        </div>
-        <div className="glass-card" style={{ padding: '1rem', borderTop: '2px solid #10b981' }}>
-          <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 'bold' }}>CASH ON HAND</p>
-          <h3 style={{ fontSize: '1.25rem' }}>₹{cashBalance.toLocaleString()}</h3>
-        </div>
-      </div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '1.5rem', marginBottom: '2rem' }}>
-        <div className="glass-card">
-          <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <PieIcon size={20} /> Category Split
-          </h3>
-          <div style={{ height: '200px' }}>
-            <Doughnut data={categoryData} options={chartOptions} />
+      <div className="glass-card premium-gradient animate-float" style={{ padding: '2rem', marginBottom: '1.5rem', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: '-20%', right: '-10%', width: '200px', height: '200px', background: 'rgba(255,255,255,0.1)', borderRadius: '50%', filter: 'blur(40px)' }}></div>
+        <p className="stat-label" style={{ color: 'rgba(255,255,255,0.7)' }}>Total Net Wealth</p>
+        <h2 style={{ fontSize: '2.5rem', color: 'white', marginTop: '0.5rem' }}>₹{balance.toLocaleString()}</h2>
+        <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
+          <div style={{ background: 'rgba(255,255,255,0.15)', padding: '0.5rem 1rem', borderRadius: '1rem', fontSize: '0.8rem', fontWeight: '600' }}>
+            Cr: ₹{totalCr.toLocaleString()}
+          </div>
+          <div style={{ background: 'rgba(0,0,0,0.15)', padding: '0.5rem 1rem', borderRadius: '1rem', fontSize: '0.8rem', fontWeight: '600' }}>
+            Dr: ₹{totalExpenseDisplay.toLocaleString()}
           </div>
         </div>
+      </div>
 
-        <div className="glass-card">
-          <h3 style={{ marginBottom: '1rem' }}>Monthly Overview</h3>
-          <div style={{ height: '200px' }}>
-            <Bar 
-              data={{
-                labels: ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-                datasets: [
-                  { label: 'Dr', data: [totalDr, 0, 0, 0, 0, 0], backgroundColor: '#ef4444' },
-                  { label: 'Cr', data: [totalCr, 0, 0, 0, 0, 0], backgroundColor: '#10b981' }
-                ]
-              }} 
-              options={chartOptions} 
-            />
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+         <SourceCard name="BOB BANK" amount={bobBalance} icon={<Landmark size={18} />} color="#3b82f6" />
+         <SourceCard name="ICICI BANK" amount={iciciBalance} icon={<Landmark size={18} />} color="#ec4899" />
+         <SourceCard name="CASH ACCOUNT" amount={cashBalance} icon={<Banknote size={18} />} color="#10b981" span={2} />
+      </div>
+
+      <div className="glass-card" style={{ marginBottom: '1.5rem' }}>
+        <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <PieIcon size={20} color="var(--accent-color)" /> Expense Breakdown
+        </h3>
+        <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+          <div style={{ height: '140px', width: '140px' }}>
+            <Doughnut data={categoryData} options={chartOptions} />
+          </div>
+          <div style={{ flex: 1, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+            {categoryData.labels.slice(0, 6).map((label, i) => (
+              <div key={label} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem' }}>
+                <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: categoryData.datasets[0].backgroundColor[i] }}></div>
+                <span style={{ color: 'var(--text-secondary)' }}>{label}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -130,16 +106,21 @@ const Dashboard = ({ transactions }) => {
   );
 };
 
-const StatCard = ({ title, value, icon, color }) => (
-  <div className="glass-card" style={{ borderLeft: `4px solid ${color}` }}>
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-      <div>
-        <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginBottom: '0.5rem' }}>{title}</p>
-        <h2 style={{ fontSize: '1.75rem' }}>{value}</h2>
-      </div>
-      <div style={{ background: 'rgba(255,255,255,0.05)', padding: '0.75rem', borderRadius: '1rem' }}>
-        {icon}
-      </div>
+const SourceCard = ({ name, amount, icon, color, span = 1 }) => (
+  <div className="glass-card" style={{ 
+    padding: '1.25rem', 
+    gridColumn: span === 2 ? 'span 2' : 'auto',
+    borderLeft: `4px solid ${color}`,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  }}>
+    <div>
+      <p className="text-xs-bold" style={{ color: 'var(--text-secondary)', marginBottom: '0.25rem' }}>{name}</p>
+      <h3 style={{ fontSize: '1.25rem', fontWeight: '800' }}>₹{amount.toLocaleString()}</h3>
+    </div>
+    <div style={{ background: `${color}15`, color: color, padding: '0.75rem', borderRadius: '14px' }}>
+      {icon}
     </div>
   </div>
 );
